@@ -1,0 +1,14 @@
+{
+  "name": "shubhampatel_mapd713_assign1",
+  "version": "1.0.0",
+  "description": "Node.js http server to store, retrieve and delete information",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Shubham Patel",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
