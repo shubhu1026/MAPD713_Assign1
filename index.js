@@ -106,4 +106,66 @@ server.post("/products", function (req, res, next) {
     // Send the product if no issues
     res.send(201, product);
   });
+
+  //--------------------------------------------------------------------------------//
+  // POST REQUEST
+  //--------------------------------------------------------------------------------//
+  server.put("/products/:id", function (req, res, next) {
+    //console.log("POST /products params=>" + JSON.stringify(req.params));
+    //console.log("POST /products body=>" + JSON.stringify(req.body));
+    console.log("products DELETE: received request");
+
+    // validation of manadatory fields
+    if (req.body.productId === undefined) {
+      // If there are any errors, pass them to next in the correct format
+      return next(new errors.BadRequestError("Product Id must be supplied"));
+    }
+    if (req.body.price === undefined) {
+      // If there are any errors, pass them to next in the correct format
+      return next(new errors.BadRequestError("Price must be supplied"));
+    }
+    if (req.body.name === undefined) {
+      // If there are any errors, pass them to next in the correct format
+      return next(new errors.BadRequestError("Name must be supplied"));
+    }
+    if (req.body.quantity === undefined) {
+      // If there are any errors, pass them to next in the correct format
+      return next(new errors.BadRequestError("Quantity must be supplied"));
+    }
+    let newProduct = {
+      _id: req.params.id,
+      productId: req.body.productId,
+      name: req.body.name,
+      price: req.body.price,
+      quantity: req.body.quantity,
+    };
+
+    // Update the product with the persistence engine
+    productsSave.update(newProduct, function (error, product) {
+      // If there are any errors, pass them to next in the correct format
+      if (error) return next(new Error(JSON.stringify(error.errors)));
+
+      console.log("products DELETE: sending response");
+      // Send a 200 OK response
+      res.send(200);
+    });
+  });
+
+  //--------------------------------------------------------------------------------//
+  // DELETE REQUEST
+  //--------------------------------------------------------------------------------//
+  server.del("/products/:id", function (req, res, next) {
+    console.log("products DELETE: received request");
+    // Delete the product with the persistence engine
+    productsSave.delete(req.params.id, function (error, product) {
+      // If there are any errors, pass them to next in the correct format
+      if (error) return next(new Error(JSON.stringify(error.errors)));
+
+      console.log("products POST: sending response");
+      // Send a 204 response
+      res
+        .send(200)
+        .JSON({ success: true, message: "Item deleted successfully" });
+    });
+  });
 });
