@@ -19,6 +19,8 @@ server.use(restify.plugins.bodyParser());
 // Counter variables for GET and POST requests\
 let getCount = 0;
 let postCount = 0;
+let putCount = 0;
+let delCount = 0;
 
 //--------------------------------------------------------------------------------//
 // GET REQUEST (All Products)
@@ -32,7 +34,14 @@ server.get("/products", function (req, res, next) {
     getCount++;
     console.log("products GET: sending response");
     console.log(
-      "Processed Request Count--> Get:" + getCount + ", Post:" + postCount
+      "Processed Request Count--> Get:" +
+        getCount +
+        ", Post:" +
+        postCount +
+        ", PUT:" +
+        putCount +
+        ", DEL:" +
+        delCount
     );
     res.send(products);
   });
@@ -55,7 +64,14 @@ server.get("/products/:id", function (req, res, next) {
       getCount++;
       console.log("products GET: sending response");
       console.log(
-        "Processed Request Count--> Get:" + getCount + ", Post:" + postCount
+        "Processed Request Count--> Get:" +
+          getCount +
+          ", Post:" +
+          postCount +
+          ", PUT:" +
+          putCount +
+          ", DEL:" +
+          delCount
       );
 
       res.send(product);
@@ -105,7 +121,14 @@ server.post("/products", function (req, res, next) {
     postCount++;
     console.log("products POST: sending response");
     console.log(
-      "Processed Request Count--> Get:" + getCount + ", Post:" + postCount
+      "Processed Request Count--> Get:" +
+        getCount +
+        ", Post:" +
+        postCount +
+        ", PUT:" +
+        putCount +
+        ", DEL:" +
+        delCount
     );
 
     // Send the product if no issues
@@ -150,6 +173,17 @@ server.put("/products/:id", function (req, res, next) {
     if (error) return next(new Error(JSON.stringify(error.errors)));
 
     console.log("products PUT: sending response");
+    putCount++;
+    console.log(
+      "Processed Request Count--> Get:" +
+        getCount +
+        ", Post:" +
+        postCount +
+        ", PUT:" +
+        putCount +
+        ", DEL:" +
+        delCount
+    );
     // Send a 200 OK response
     res.send(200, newProduct);
   });
@@ -167,5 +201,16 @@ server.del("/products/:id", function (req, res, next) {
     // Send a 204 response
     res.send(200, JSON.stringify("Item deleted successfully"));
     console.log("Item deleted successfully");
+    delCount++;
+    console.log(
+      "Processed Request Count--> Get:" +
+        getCount +
+        ", Post:" +
+        postCount +
+        ", PUT:" +
+        putCount +
+        ", DEL:" +
+        delCount
+    );
   });
 });
