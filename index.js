@@ -37,3 +37,45 @@ server.get("/products", function (req, res, next) {
     res.send(products);
   });
 });
+
+//--------------------------------------------------------------------------------//
+// POST REQUEST
+//--------------------------------------------------------------------------------//
+server.post("/products", function (req, res, next) {
+  console.log("products POST: received request");
+
+  if (req.body.productId === undefined) {
+    return next(new errors.BadRequestError("Product Id must be supplied"));
+  }
+  if (req.body.price === undefined) {
+    return next(new errors.BadRequestError("Price must be supplied"));
+  }
+  if (req.body.name === undefined) {
+    return next(new errors.BadRequestError("Name must be supplied"));
+  }
+  if (req.body.quantity === undefined) {
+    return next(new errors.BadRequestError("Quantity must be supplied"));
+  }
+
+  let newProduct = {
+    productId: req.body.productId,
+    name: req.body.name,
+    price: req.body.price,
+    quantity: req.body.quantity,
+  };
+
+  // Create the product using the persistence engine
+  productsSave.create(newProduct, function (error, product) {
+    // If there are any errors, pass them to next in the correct format
+    if (error) return next(new Error(JSON.stringify(error.errors)));
+
+    postCount++;
+    console.log(
+      "Processed Request Count--> Get:" + getCount + ", Post:" + postCount
+    );
+    console.log("products POST: sending response");
+
+    // Send the product if no issues
+    res.send(201, product);
+  });
+});
