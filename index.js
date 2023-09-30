@@ -59,7 +59,10 @@ server.get("/products/:id", function (req, res, next) {
   // Find a single product by their id within save
   productsSave.findOne({ _id: req.params.id }, function (error, product) {
     // If there are any errors, pass them to next in the correct format
-    if (error) return next(new Error(JSON.stringify(error.errors)));
+    if (error) {
+      res.send(404);
+      return next(new Error(JSON.stringify(error.errors)));
+    }
 
     if (product) {
       // Send the product if no issues
