@@ -16,6 +16,10 @@ server.listen(PORT, HOST, function () {
 server.use(restify.plugins.fullResponse());
 server.use(restify.plugins.bodyParser());
 
+// Counter variables for GET and POST requests\
+let getCount = 0;
+let postCount = 0;
+
 //--------------------------------------------------------------------------------//
 // GET REQUEST
 //--------------------------------------------------------------------------------//
@@ -25,7 +29,11 @@ server.get("/products", function (req, res, next) {
   // Find all the products within the given collection
   productsSave.find({}, function (error, products) {
     // Return all of the products in the system
+    getCount++;
     console.log("products GET: sending response");
+    console.log(
+      "Processed Request Count--> Get:" + getCount + ", Post:" + postCount
+    );
     res.send(products);
   });
 });
