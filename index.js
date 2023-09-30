@@ -11,6 +11,9 @@ let restify = require("restify"),
 // Set the server to listen at localhost port 5000
 server.listen(PORT, HOST, function () {
   console.log("Server is listening at %s", server.name, server.url);
+  console.log("EndPoints:");
+  console.log(server.url + "/products : METHOD: GET, POST");
+  console.log(server.url + "/products/:id : METHOD: GET, PUT, DEL");
 });
 
 server.use(restify.plugins.fullResponse());
