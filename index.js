@@ -21,7 +21,7 @@ let getCount = 0;
 let postCount = 0;
 
 //--------------------------------------------------------------------------------//
-// GET REQUEST
+// GET REQUEST (All Products)
 //--------------------------------------------------------------------------------//
 server.get("/products", function (req, res, next) {
   console.log("products GET: received request");
@@ -35,6 +35,34 @@ server.get("/products", function (req, res, next) {
       "Processed Request Count--> Get:" + getCount + ", Post:" + postCount
     );
     res.send(products);
+  });
+});
+
+//--------------------------------------------------------------------------------//
+// GET REQUEST (A single product with its id)
+//--------------------------------------------------------------------------------//
+server.get("/products/:id", function (req, res, next) {
+  console.log("products GET: received request");
+
+  // Find a single product by their id within save
+  productsSave.findOne({ _id: req.params.id }, function (error, product) {
+    // If there are any errors, pass them to next in the correct format
+    if (error) return next(new Error(JSON.stringify(error.errors)));
+
+    if (product) {
+      // Send the product if no issues
+
+      getCount++;
+      console.log("products GET: sending response");
+      console.log(
+        "Processed Request Count--> Get:" + getCount + ", Post:" + postCount
+      );
+
+      res.send(product);
+    } else {
+      // Send 404 header if the product doesn't exist
+      res.send(404);
+    }
   });
 });
 
